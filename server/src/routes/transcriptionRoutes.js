@@ -4,6 +4,36 @@ const {
 } = require("../services/deepgramService");
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/transcription/start:
+ *   post:
+ *     summary: Start live transcription and translation
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - audioUrl
+ *               - targetLanguage
+ *             properties:
+ *               audioUrl:
+ *                 type: string
+ *               targetLanguage:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Transcription and translation started
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
 router.post("/start", (req, res) => {
   const { audioUrl, targetLanguage } = req.body;
 
@@ -16,8 +46,6 @@ router.post("/start", (req, res) => {
   const connection = startLiveTranscriptionAndTranslation(
     audioUrl,
     (transcript, translation) => {
-      // כאן נשלח את התמלול והתרגום ללקוח
-      // במקרה של תוסף כרום, נצטרך להשתמש ב-WebSocket או Server-Sent Events
       console.log("Transcript:", transcript);
       console.log("Translation:", translation);
     },
